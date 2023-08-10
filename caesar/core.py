@@ -34,3 +34,37 @@ def encrypt(key, plaintext: str):
 
 def decrypt(key, ciphertext: str):
     return encrypt(key * -1, ciphertext)
+
+
+def get_vignere_key(key_letter):
+    return ALPHABET.find(key_letter.lower()) + 1
+
+
+def vignere_encrypt(key: str, plaintext: str):
+    result = ""
+    key_idx = 0
+
+    for letter in plaintext:
+        cur_key = get_vignere_key(key[key_idx])
+        enc = _encrypt_letter(key=cur_key, plaintext=letter)
+        result += enc
+        key_idx += 1
+        if key_idx >= len(key):
+            key_idx = 0
+
+    return result
+
+
+def vignere_decrypt(key: str, ciphertext: str):
+    result = ""
+    key_idx = 0
+
+    for letter in ciphertext:
+        cur_key = get_vignere_key(key[key_idx]) * -1
+        enc = _encrypt_letter(key=cur_key, plaintext=letter)
+        result += enc
+        key_idx += 1
+        if key_idx >= len(key):
+            key_idx = 0
+
+    return result
