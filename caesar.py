@@ -1,12 +1,33 @@
 import typer
-from caesar.core import encrypt, decrypt
+from caesar.core import encrypt, decrypt, vignere_decrypt, vignere_encrypt
 
 
-def main(key: int, message: str, d: bool = False):
+def main(
+    key: str,
+    message: str,
+    d: bool = False,
+    vignere: bool = False,
+    reverse: bool = False,
+):
+    result = ""
     if d:
-        print(decrypt(key, message))
+        if vignere:
+            result = vignere_decrypt(key, message)
+        else:
+            key = int(key)
+            result = decrypt(key, message)
+        if reverse:
+            result = "".join(reversed(message))
     else:
-        print(encrypt(key, message))
+        if reverse:
+            message = "".join(reversed(message))
+        if vignere:
+            result = vignere_encrypt(key, message)
+        else:
+            key = int(key)
+            result = encrypt(key, message)
+
+    print(result)
 
 
 if __name__ == "__main__":
