@@ -1,5 +1,13 @@
 import pytest
-from caesar.core import _encrypt_letter, _decrypt_letter, encrypt, decrypt
+from caesar.core import (
+    _encrypt_letter,
+    _decrypt_letter,
+    encrypt,
+    decrypt,
+    get_vignere_key,
+    vignere_encrypt,
+    vignere_decrypt,
+)
 
 
 PLAINTEXT = "plain"
@@ -50,3 +58,23 @@ def test_decryption(test_data: dict):
     expected = test_data[PLAINTEXT]
     actual = decrypt(test_data[KEY], test_data[CIPHERTEXT])
     assert actual == expected
+
+
+def test_get_vignere_key():
+    assert get_vignere_key("a") == 1
+    assert get_vignere_key("A") == 1
+    assert get_vignere_key("Z") == 26
+
+
+def test_vignere_encrypt():
+    key = "AABB"
+    plain = "ABCDEFG"
+    expected = "BCEFFGI"
+    assert vignere_encrypt(key, plain) == expected
+
+
+def test_vignere_decrypt():
+    key = "AABB"
+    expected = "ABCDEFG"
+    cipher = "BCEFFGI"
+    assert vignere_decrypt(key, cipher) == expected
