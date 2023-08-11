@@ -4,11 +4,20 @@ from caesar.core import encrypt, decrypt, vignere_decrypt, vignere_encrypt
 
 def main(
     key: str,
-    message: str,
     d: bool = False,
     vignere: bool = False,
     reverse: bool = False,
+    message: str = None,
+    infile: str = None,
+    outfile: str = None,
 ):
+    if infile:
+        with open(infile, "r", encoding="UTF-8") as fh:
+            message = fh.read()
+            if not message:
+                print(f"{infile} not found.")
+                exit()
+
     result = ""
     if d:
         if vignere:
@@ -27,7 +36,11 @@ def main(
             key = int(key)
             result = encrypt(key, message)
 
-    print(result)
+    if outfile:
+        with open(outfile, "w", encoding="UTF-8") as fh:
+            fh.write(result)
+    else:
+        print(result)
 
 
 if __name__ == "__main__":
